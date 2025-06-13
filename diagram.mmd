@@ -1,0 +1,44 @@
+erDiagram
+    USER ||--o{ CAR_POST : creates
+    BRAND ||--o{ CAR_POST : includes
+    CAR_POST ||--o{ TRANSACTION : generates
+    USER ||--o{ TRANSACTION : makes
+
+    USER {
+        int id
+        string username
+        string email
+    }
+
+    BRAND {
+        int id
+        string name
+    }
+
+    CAR_POST {
+        int id
+        string brand
+        string model
+        int year
+        float price
+        string description
+        boolean is_active
+        datetime created_at
+    }
+
+    TRANSACTION {
+        int id
+        int car_post_id
+        int buyer_id
+        datetime created_at
+    }
+
+sequenceDiagram
+    participant Frontend
+    participant API
+    participant Database
+
+    Frontend->>API: POST /v1/transactions
+    API->>Database: INSERT INTO transactions
+    Database-->>API: Confirmación
+    API-->>Frontend: 201 Created + JSON
